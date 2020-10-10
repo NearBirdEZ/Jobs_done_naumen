@@ -82,7 +82,7 @@ class Send_message:
             description = self.api.description_body(request)
             text = f"""\
 Здравствуйте!
-Просьба подтвердить выполенние работ ответным письмо по заявке № {request}
+Просьба подтвердить выполнение работ ответным письмо по запросу № {request}
 
 {description}
 
@@ -95,7 +95,7 @@ e-mail: service_desk@pilot.ru
 """
             try:
                 self.api.send_mail(text)
-                self.api.send_comments(request, 'Направлен запрос для подтверждения выполнения работ', True)
+                self.api.send_comments(request, 'Направлен запрос для подтверждения выполненных работ', True)
                 time.sleep(1)
             except NoSuchElementException:
                 bad.append(request)

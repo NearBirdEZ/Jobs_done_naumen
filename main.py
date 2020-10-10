@@ -18,7 +18,7 @@ class Send_message:
         self.lbl_p_naumen = tk.Label(gui_window, text='Password Naumen')
 
         self.login_area = tk.Entry(gui_window, width=30)
-        self.password_area = tk.Entry(gui_window, width=30)
+        self.password_area = tk.Entry(gui_window, width=30, show="*")
 
         self.btn_send = tk.Button(text='Отправить логин и\nпароль', command=self.send_log_pass)
         self.btn_clear = tk.Button(text='Очистить поле\nлогина и пароля', command=self.clear)
@@ -55,7 +55,6 @@ class Send_message:
             messagebox.showinfo('Ошибка', 'Не заполнены\nлогин и пароль')
             self.clear()
             return
-        self.clear()
         self.btn_send.configure(state='disabled')
         self.btn_clear.configure(state='disabled')
         self.api.start_naumen(login, password)

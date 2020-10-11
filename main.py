@@ -102,9 +102,9 @@ e-mail: service_desk@pilot.ru
             self.lbl_count.configure(text=f'Выполнено {count} из {total_request}')
             window.title(f'{count} из {total_request}')
         if len(bad) > 0:
-            with open('errors.txt', 'w') as bad:
+            with open('errors.txt', 'w') as errors:
                 for query in bad:
-                    bad.write(query, '\n')
+                    errors.write(f'{query}\n')
         self.api.driver.close()
         messagebox.showinfo('Done', 'Все было отправлено\n'
                                     'Требуется проверить файл\n'

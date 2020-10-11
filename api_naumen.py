@@ -21,56 +21,59 @@ class API_Naumen:
         """Функция для заполнения полей по ID или XPATH
            При необходимости нажатие на кнопку. По-умолчанию без нажатия
            атрибут private спецаильно для поля с комментарием, по-умолчанию данная опция выключена"""
-        try:
-            if id_xpath_area.startswith('//*[@'):
-                self.driver.find_element_by_xpath(id_xpath_area).clear()
-                self.driver.find_element_by_xpath(id_xpath_area).send_keys(words)
-            else:
-                self.driver.find_element_by_id(id_xpath_area).clear()
-                self.driver.find_element_by_id(id_xpath_area).send_keys(words)
-            time.sleep(t)
-            if private:
-                self.driver.find_element_by_id("privateComment").click()
 
-            if id_xpath_button:
-                if id_xpath_button.startswith('//*[@'):
-                    self.driver.find_element_by_xpath(id_xpath_button).click()
-                else:
-                    self.driver.find_element_by_id(id_xpath_button).click()
-            time.sleep(t)
-        except NoSuchElementException:
-            raise NoSuchElementException('Вы находитесь в специфическом окне, где нельзя что либо вставить или нажать'
-                                         'кнопку, может быть ошибка в пути')
+        if id_xpath_area.startswith('//*[@'):
+            self.driver.find_element_by_xpath(id_xpath_area).clear()
+            self.driver.find_element_by_xpath(id_xpath_area).send_keys(words)
+        else:
+            self.driver.find_element_by_id(id_xpath_area).clear()
+            self.driver.find_element_by_id(id_xpath_area).send_keys(words)
+        time.sleep(t)
+        if private:
+            self.driver.find_element_by_id("privateComment").click()
+
+        if id_xpath_button:
+            if id_xpath_button.startswith('//*[@'):
+                self.driver.find_element_by_xpath(id_xpath_button).click()
+            else:
+                self.driver.find_element_by_id(id_xpath_button).click()
+        time.sleep(t)
+
 
     """
-
-
+    
+    
     Три самый часто используемые запроса поиска
     - По номеру запроса
     - По названию магазина
     - По серийному номеру
-
-
+    
+    
     """
+
 
     def search_by_request(self, request):
         self.enter_words('//*[@id="sdsearch_ServiceCallIdSearchType"]',
                          request,
                          '//*[@id="dosearchsdsearch_ServiceCallIdSearchType"]')
 
+
     def search_by_shop(self, shop):
         self.enter_words('//*[@id="searchString"]', shop, '//*[@id="doSearch"]')
+
 
     def search_by_serial_number(self, serial_number):
         self.enter_words('//*[@id="sdsearch_CMDBObjectInvNumberSearchTypeCMDBObjectAdvSearch"]',
                          serial_number,
                          '//*[@id="dosearchsdsearch_CMDBObjectInvNumberSearchTypeCMDBObjectAdvSearch"]')
 
-    '''
 
+    '''
+    
     При необходимости можно удалить
-
+    
     '''
+
 
     def back_to_request(func):
         # Выход на главную и переход по номеру запроса
@@ -91,12 +94,14 @@ class API_Naumen:
 
         return wrapper
 
+
     def description_body(self, request):
         """Получение текста заявки"""
         self.search_by_request(request)
         time.sleep(1)
         description = self.driver.find_element_by_class_name("servicecall_description_inner").text
         return description
+
 
     def shop_request(self, request):
         """Получить магазин у заявки"""
@@ -106,12 +111,14 @@ class API_Naumen:
                                                  'client"]/a/span').text
         return shop
 
+
     def send_mail(self, text):
         """Функция для отправки почты.текст письма(с переносами)"""
         link_mail = self.driver.find_element_by_id("ServiceCall.MailingList.SCMailing").get_attribute("href")
         self.driver.get(link_mail)
         self.enter_words('//*[@id="mailText"]', text, '//*[@id="send"]')
         time.sleep(1)
+
 
     @back_to_request
     def send_comments(self, request, comment_text, conf=False):
